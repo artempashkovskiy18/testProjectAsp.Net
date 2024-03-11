@@ -10,7 +10,7 @@
   <tbody>
   <tr *ngFor = "let item of urls">
     <td><a [href] = "item.fullUrl"> {{ item.fullUrl }}</a></td>
-    <td><a [href] = "item.fullUrl"> {{ item.shortUrl }}</a></td>
+    <td><a [href] = "_backendLink + item.shortUrl"> {{ item.shortUrl }}</a></td>
     <td *ngIf = "user != ''">
       <button routerLink = "info/{{item.id}}"
               class = "btn btn-info">info

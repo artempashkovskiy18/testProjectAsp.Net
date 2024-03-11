@@ -25,6 +25,13 @@ export class UrlsComponent implements OnInit{
   error: string;
   isUserAdmin: boolean;
 
+  _backendLink = "http://localhost:5230/";
+  _getAllUrlsLink = "http://localhost:5230/Urls/GetUrls";
+  _deleteUrlLink = "http://localhost:5230/Urls/DeleteUrl/"; //+id
+  _addUrlLink = "http://localhost:5230/Urls/AddUrl";
+  _checkIfUserAdminLink = "http://localhost:5230/User/IsAdmin?email=";
+
+
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
@@ -41,7 +48,7 @@ export class UrlsComponent implements OnInit{
   }
 
   getUrls() {
-    this.http.get<Array<UrlModel>>("http://localhost:5230/Urls/GetUrls").subscribe({
+    this.http.get<Array<UrlModel>>(this._getAllUrlsLink).subscribe({
       next: (response) => {
         this.urls = response;
       },
@@ -52,7 +59,7 @@ export class UrlsComponent implements OnInit{
   }
 
   deleteUrl(id: number) {
-    this.http.delete("http://localhost:5230/Urls/DeleteUrl/" + id).subscribe({
+    this.http.delete(this._deleteUrlLink + id).subscribe({
       next: (response) => {
         this.getUrls();
       },
@@ -63,12 +70,11 @@ export class UrlsComponent implements OnInit{
   }
 
   addUrl(fullUrl: string) {
-    this.user = this.cookieService.get("email");
     if (this.user == "") {
       this.error = "you must be registered to add links";
       return;
     }
-    this.http.post("http://localhost:5230/Urls/AddUrl", {
+    this.http.post(this._addUrlLink, {
       fullUrl: fullUrl,
       creator: this.user,
       creationDate: Date.now()
@@ -84,7 +90,7 @@ export class UrlsComponent implements OnInit{
   }
 
   isAdmin() {
-    this.http.get<boolean>("http://localhost:5230/User/IsAdmin?email=" + this.user).subscribe({
+    this.http.get<boolean>(this._checkIfUserAdminLink + this.user).subscribe({
       next: (response) => {
         this.isUserAdmin = response;
       },

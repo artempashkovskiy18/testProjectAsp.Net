@@ -19,7 +19,7 @@ public class UrlShortenerService
         return _service;
     }
 
-    public string GetShortenedUrl(string fullUrl)
+    public string GetShortenedUrl()
     {
         char[] shortUrl = new char[_numberOfSymbolsInShortUrl];
         Random rnd = new Random();

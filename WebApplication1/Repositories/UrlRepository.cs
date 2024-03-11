@@ -33,6 +33,11 @@ public class UrlRepository
         return _urls.Find(item => item.Id == id);
     }
     
+    public Url? GetByShortUrl(string shortUrl)
+    {
+        return _urls.Find(item => item.ShortUrl == shortUrl);
+    }
+    
     public bool HasFullUrl(string fullUrl)
     {
         return _urls.Find(item => item.FullUrl == fullUrl) != null;

@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Constants;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
 using WebApplication1.Services;
@@ -13,7 +14,7 @@ public class UrlsController : Controller
     
     public IActionResult Index()
     {
-        return Redirect("http://localhost:4200/");
+        return Redirect(UrlConstants.AngularServerLink);
     }
 
     public IActionResult GetUrls()
@@ -53,10 +54,10 @@ public class UrlsController : Controller
             text = reader.ReadToEndAsync().Result;
         }
 
-        string fullUrl = JsonObject.Parse(text)["fullUrl"].ToString();
-        string creator = JsonObject.Parse(text)["creator"].ToString();
+        string fullUrl = JsonObject.Parse(text)[UrlConstants.JsonFullUrl].ToString();
+        string creator = JsonObject.Parse(text)[UrlConstants.JsonCreator].ToString();
         DateTime creationDate = new DateTime(1970, 1, 1)
-            .AddMilliseconds(Int64.Parse(JsonObject.Parse(text)["creationDate"].ToString()))
+            .AddMilliseconds(Int64.Parse(JsonObject.Parse(text)[UrlConstants.JsonCreationDate].ToString()))
             .ToLocalTime();
         
         if (!Uri.TryCreate(fullUrl, UriKind.Absolute, out _))
@@ -69,9 +70,15 @@ public class UrlsController : Controller
             return BadRequest("such url already exists");
         }
 
-        string shortUrl = _service.GetShortenedUrl(fullUrl);
+        string shortUrl = _service.GetShortenedUrl();
         
         _urlRepository.AddUrl(new Url(fullUrl, shortUrl, creator, creationDate));
         return Ok();
+    }
+
+    [Route("{shortUrl:length(10)}")]
+    public IActionResult RedirectToFullUrl(string shortUrl)
+    {
+        return Redirect(_urlRepository.GetByShortUrl(shortUrl).FullUrl);
     }
 }

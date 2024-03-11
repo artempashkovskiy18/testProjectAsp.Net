@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Constants;
 using WebApplication1.Repositories;
 
 namespace WebApplication1.Controllers;
@@ -15,16 +16,16 @@ public class UserController : Controller
     public IActionResult LogOut()
     {
         CookieOptions options = new CookieOptions();
-        Response.Cookies.Delete("email");
+        Response.Cookies.Delete(UserConstants.CookieEmail);
         return Redirect("/Home/Index");
     }
 
     [HttpPost]
     public IActionResult Validate(IFormCollection collection)
     {
-        collection.TryGetValue("email", out var email);
-        collection.TryGetValue("password", out var password);
-        collection.TryGetValue("rememberMe", out var rememberMe);
+        collection.TryGetValue(UserConstants.FormEmailField, out var email);
+        collection.TryGetValue(UserConstants.FormPasswordField, out var password);
+        collection.TryGetValue(UserConstants.FormRememberMeField, out var rememberMe);
         if (!ModelState.IsValid) return View("LogIn");
 
         if (_repository.GetUserByEmail(email) == null)
@@ -46,7 +47,7 @@ public class UserController : Controller
             options.MaxAge = TimeSpan.FromDays(30);
         }
 
-        Response.Cookies.Append("email", email, options);
+        Response.Cookies.Append(UserConstants.CookieEmail, email, options);
         return Redirect("/Home/Index");
     }
 

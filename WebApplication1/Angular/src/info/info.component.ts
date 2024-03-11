@@ -17,6 +17,7 @@ import {NgForOf, NgIf} from "@angular/common";
 })
 export class InfoComponent implements OnInit {
   url:UrlModel
+  _backendLink = "http://localhost:5230/";
   constructor(
     private http: HttpClient,
     private router: ActivatedRoute

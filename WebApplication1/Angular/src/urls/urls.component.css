@@ -1,0 +1,12 @@
+table{
+  table-layout: fixed;
+  width: 90%;
+  border: 2px solid black;
+  word-break: break-all;
+  margin: 5px auto;
+}
+.container{
+  width: 40%;
+  border: 2px solid black;
+  border-radius: 10px;
+}

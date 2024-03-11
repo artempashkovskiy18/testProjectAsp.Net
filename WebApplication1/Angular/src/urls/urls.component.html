@@ -1,0 +1,47 @@
+<table class = "table">
+  <thead>
+  <tr>
+    <th scope = "col">Full url</th>
+    <th scope = "col">Short url</th>
+    <th *ngIf = "user != ''">Info</th>
+    <th *ngIf = "user != ''">Delete url</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor = "let item of urls">
+    <td><a [href] = "item.fullUrl"> {{ item.fullUrl }}</a></td>
+    <td><a [href] = "item.fullUrl"> {{ item.shortUrl }}</a></td>
+    <td *ngIf = "user != ''">
+      <button routerLink = "info/{{item.id}}"
+              class = "btn btn-info">info
+      </button>
+    </td>
+    <td *ngIf = "user != ''">
+      <button class = "btn btn-danger"
+              *ngIf = "user == item.creator || isUserAdmin"
+              (click) = "deleteUrl(item.id)">delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class = "container">
+  <form (ngSubmit) = "addUrl(url.value)">
+    <div class = "mb-3">
+      <label for = "url"
+             class = "form-label">Enter url you want to add</label>
+      <input type = "text"
+             class = "form-control"
+             id = "url"
+             #url>
+      <span style="color: red">{{ error }}</span>
+    </div>
+    <button type = "submit"
+            class = "btn btn-primary">Submit
+    </button>
+  </form>
+</div>
+<router-outlet></router-outlet>
+
+

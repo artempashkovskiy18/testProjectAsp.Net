@@ -1,0 +1,18 @@
+<table class = "table">
+  <thead>
+  <tr>
+    <th scope = "col">Full url</th>
+    <th scope = "col">Short url</th>
+    <th scope = "col">User</th>
+    <th scope = "col">Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr >
+    <td><a [href] = "url.fullUrl"> {{ url.fullUrl }}</a></td>
+    <td><a [href] = "url.fullUrl"> {{ url.shortUrl }}</a></td>
+    <td>{{ url.creator }}</td>
+    <td>{{ url.creationDate }}</td>
+  </tr>
+  </tbody>
+</table>
